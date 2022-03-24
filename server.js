@@ -15,6 +15,9 @@ app.use(cors());
 const PORT = process.env.PORT;
 //This must be named because when using databases to deploy they look for the PORT variable.
 
+app.get('./', (request, response) => {
+  response.send('Hello and Welcoe to the base');
+});
 
 app.get('/weather', apiWeather);
 async function apiWeather(request, response) {
