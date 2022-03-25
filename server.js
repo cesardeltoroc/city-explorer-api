@@ -16,18 +16,19 @@ const PORT = process.env.PORT;
 //This must be named because when using databases to deploy they look for the PORT variable.
 
 app.get('/', (request, response) => {
-  response.send('Hello and Welcoe to the base');
+  response.send('Hello and Welcome to the home base');
 });
 
 app.get('/weather', apiWeather);
 async function apiWeather(request, response) {
   const lat = parseInt(request.query.lat);
   const lon = parseInt(request.query.lon);
-  const url = `https://api.weatherbit.io/v2.0/forecast/daily?day=[4]&lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}&`;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}&`;
   try {
     const weatherResponse = await axios.get(url);
     const weatherArr = weatherResponse.data.data.map(data => new Forecast(data));
-    response.send(weatherArr);
+    console.log(weatherArr);
+    response.status(200).send(weatherArr);
   } catch (error) {
     console.error(`error from axios: ${error}`);
     response.status(500).send('server error!!!');
@@ -36,6 +37,8 @@ async function apiWeather(request, response) {
 class Forecast {
   constructor(obj) {
     this.date = obj.valid_date,
+    this.highTemp = obj.max_temp,
+    this.lowTemp = obj.low_temp,
     this.description = obj.weather.description;
   }
 }
@@ -46,6 +49,7 @@ async function apiMovies(request, response) {
   try{
     const movieResponse = await axios.get(url);
     const movieArr = movieResponse.data.results.map(data => new Movie (data));
+    console.log(movieArr[0]);
     response.send(movieArr);
   }catch(error){
     response.status(500).send('server error!!!');
@@ -53,9 +57,10 @@ async function apiMovies(request, response) {
 }
 class Movie {
   constructor(obj){
-    this.title = obj.title,
-    this.release_date = obj.release_date,
-    this.img = obj.backdrop_path;
+    this.title = obj.title;
+    this.release_date = obj.release_date;
+    this.test = 'hello';
+    this.img = `https://image.tmdb.org/t/p/w500${obj.backdrop_path}`;
   }
 }
 
