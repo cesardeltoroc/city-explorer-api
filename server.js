@@ -23,11 +23,10 @@ app.get('/weather', apiWeather);
 async function apiWeather(request, response) {
   const lat = parseInt(request.query.lat);
   const lon = parseInt(request.query.lon);
-  const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}&`;
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${process.env.WEATHER_API_KEY}&days=3&`;
   try {
     const weatherResponse = await axios.get(url);
     const weatherArr = weatherResponse.data.data.map(data => new Forecast(data));
-    console.log(weatherArr);
     response.status(200).send(weatherArr);
   } catch (error) {
     console.error(`error from axios: ${error}`);
@@ -49,7 +48,6 @@ async function apiMovies(request, response) {
   try{
     const movieResponse = await axios.get(url);
     const movieArr = movieResponse.data.results.map(data => new Movie (data));
-    console.log(movieArr[0]);
     response.send(movieArr);
   }catch(error){
     response.status(500).send('server error!!!');
@@ -59,7 +57,6 @@ class Movie {
   constructor(obj){
     this.title = obj.title;
     this.release_date = obj.release_date;
-    this.test = 'hello';
     this.img = `https://image.tmdb.org/t/p/w500${obj.backdrop_path}`;
   }
 }
