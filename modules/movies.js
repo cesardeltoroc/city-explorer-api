@@ -7,8 +7,8 @@ function apiMovies(request, response) {
 
   axios
     .get(url)
-    .then(res => {
-      const movieArr = res.data.results.map(data => new Movie (data));
+    .then(movieRes => {
+      const movieArr = movieRes.data.results.map(data => new Movie (data));
       response.send(movieArr);
     })
     .catch(err => {
@@ -21,7 +21,7 @@ class Movie {
   constructor(obj){
     this.title = obj.title;
     this.release_date = obj.release_date;
-    this.img = `https://image.tmdb.org/t/p/w500${obj.backdrop_path}`;
+    this.img = `http://image.tmdb.org/t/p/w500${obj.backdrop_path}`;
   }
 }
 
