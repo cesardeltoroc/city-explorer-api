@@ -8,8 +8,8 @@ function apiWeather(request, response) {
 
   axios
     .get(url)
-    .then(res => {
-      const weatherArr = res.data.data.map(data => new Forecast(data));
+    .then(weatherRes => {
+      const weatherArr = weatherRes.data.data.map(data => new Forecast(data));
       response.status(200).send(weatherArr);
     }, url)
     .catch(err => {
